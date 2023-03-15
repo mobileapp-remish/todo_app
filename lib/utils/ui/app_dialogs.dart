@@ -4,6 +4,43 @@ import 'package:todo_app/widgets/log_out_dialog.dart';
 import 'package:todo_app/widgets/progress_dialog_widget.dart';
 
 class AppDialogs {
+  static void displayErrorSnackBar({
+    required String message,
+    required BuildContext context,
+  }) {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    final snackBar = SnackBar(
+      content: Text(message),
+      elevation: 3,
+      behavior: SnackBarBehavior.floating,
+      margin: const EdgeInsets.all(8),
+      action: SnackBarAction(
+        label: 'RETRY',
+        onPressed: () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+      backgroundColor: Colors.red,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  static void _displaySuccessSnackBar({
+    required String message,
+    required BuildContext context,
+  }) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      elevation: 3,
+      behavior: SnackBarBehavior.floating,
+      margin: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+      backgroundColor: Colors.green,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
 //TODO Please Wait Dialog
   static Future<void> showProgressDialog({
     required BuildContext context,

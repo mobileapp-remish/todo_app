@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '389735548961',
     projectId: 'todo-app-496da',
     storageBucket: 'todo-app-496da.appspot.com',
+    androidClientId: '389735548961-lg5hmsjtoperq5k76s6ek5ffr4srbblf.apps.googleusercontent.com',
     iosClientId: '389735548961-bca2v5ikaf673739st92qgfa7gv8l6k8.apps.googleusercontent.com',
     iosBundleId: 'com.example.todoApp',
   );

@@ -1,6 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo_app/constants/images_path.dart';
+import 'package:todo_app/modules/dashboard/dashboard_screen.dart';
+import 'package:todo_app/utils/helpers/custom_exception.dart';
+import 'package:todo_app/utils/helpers/preference_obj.dart';
+import 'package:todo_app/utils/services/sign_in_with_google_service.dart';
 import 'package:todo_app/utils/ui/app_dialogs.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -82,11 +88,7 @@ class LoginScreen extends StatelessWidget {
                             ),
                             child: InkWell(
                               onTap: () {
-                                AppDialogs.showProgressDialog(
-                                  context: context,
-                                  isDismissible: false,
-                                );
-                                // _loginUser();
+                                _loginWithGoogle(context: context);
                               },
                               borderRadius: BorderRadius.circular(8.0),
                               child: Padding(
@@ -126,5 +128,26 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _loginWithGoogle({required BuildContext context}) async {
+    try {
+      final GoogleSignInAccount googleSignInAccount =
+          await SignInWithGoogleService.signInWithGoogle();
+      await PreferenceObj.setUserId(userId: googleSignInAccount.id);
+      await PreferenceObj.setName(name: googleSignInAccount.displayName ?? '');
+      await PreferenceObj.setEmailId(emailId: googleSignInAccount.email);
+      await PreferenceObj.setProfileUrl(
+          profileUrl: googleSignInAccount.photoUrl ?? '');
+      await PreferenceObj.setIsLogin(isLoggedIn: true);
+      Navigator.pushReplacementNamed(context, DashboardScreen.routeName);
+      return;
+    } on CustomException catch (errMsg) {
+      await PreferenceObj.setIsLogin(isLoggedIn: false);
+      AppDialogs.displayErrorSnackBar(
+        message: errMsg.errMessage,
+        context: context,
+      );
+    }
   }
 }
