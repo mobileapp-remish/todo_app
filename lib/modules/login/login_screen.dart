@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo_app/constants/images_path.dart';
-import 'package:todo_app/modules/dashboard/dashboard_screen.dart';
+import 'package:todo_app/modules/dashboard/screens/dashboard_screen.dart';
 import 'package:todo_app/utils/helpers/custom_exception.dart';
 import 'package:todo_app/utils/helpers/preference_obj.dart';
 import 'package:todo_app/utils/services/sign_in_with_google_service.dart';

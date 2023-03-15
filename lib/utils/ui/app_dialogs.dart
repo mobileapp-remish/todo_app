@@ -26,7 +26,7 @@ class AppDialogs {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  static void _displaySuccessSnackBar({
+  static void displaySuccessSnackBar({
     required String message,
     required BuildContext context,
   }) {

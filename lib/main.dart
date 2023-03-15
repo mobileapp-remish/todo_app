@@ -1,9 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/constants/common_constants.dart';
 import 'package:todo_app/firebase_options.dart';
-import 'package:todo_app/modules/dashboard/dashboard_screen.dart';
+import 'package:todo_app/modules/add_task/screens/add_task_screen.dart';
+import 'package:todo_app/modules/dashboard/providers/task_provider.dart';
+import 'package:todo_app/modules/dashboard/screens/dashboard_screen.dart';
 import 'package:todo_app/modules/login/login_screen.dart';
 import 'package:todo_app/utils/helpers/preference_obj.dart';
 
@@ -13,7 +16,6 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await Future.delayed(const Duration(seconds: 1));
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -27,21 +29,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: CommonConstants.appName,
-      debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.light,
-      theme: ThemeData(
-        fontFamily: CommonConstants.regularFont,
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) => TaskProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        title: CommonConstants.appName,
+        debugShowCheckedModeBanner: false,
+        themeMode: ThemeMode.light,
+        theme: ThemeData(
+          fontFamily: CommonConstants.regularFont,
+          primarySwatch: Colors.blue,
+        ),
+        initialRoute: PreferenceObj.getIsLogin
+            ? DashboardScreen.routeName
+            : LoginScreen.routeName,
+        routes: {
+          LoginScreen.routeName: (ctx) => const LoginScreen(),
+          DashboardScreen.routeName: (ctx) => const DashboardScreen(),
+          AddTaskScreen.routeName: (ctx) => AddTaskScreen(),
+        },
       ),
-      initialRoute: PreferenceObj.getIsLogin
-          ? DashboardScreen.routeName
-          : LoginScreen.routeName,
-      routes: {
-        LoginScreen.routeName: (ctx) => const LoginScreen(),
-        DashboardScreen.routeName: (ctx) => const DashboardScreen(),
-      },
     );
   }
 }
