@@ -19,6 +19,7 @@ class AddTaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _taskDate.text = Helper.formatDate(date: DateTime.now());
     final TaskProvider taskProvider =
         Provider.of<TaskProvider>(context, listen: false);
     return Scaffold(
@@ -122,19 +123,46 @@ class AddTaskScreen extends StatelessWidget {
                       date: _taskDate.text.trim(),
                     )
                         .then((value) {
-                      Navigator.popUntil(
-                        context,
-                        ModalRoute.withName(DashboardScreen.routeName),
+                      Navigator.pop(context);
+                      AppDialogs.showAlertDialog(
+                        context: context,
+                        title: 'Task Created!',
+                        description: 'New Task has been created!',
+                        firstButtonName: 'Add More',
+                        secondButtonName: 'Go To Home',
+                        onFirstButtonClicked: () {
+                          _taskTitle.clear();
+                          _taskDescription.clear();
+                          _taskDate.clear();
+                          Navigator.pop(context);
+                        },
+                        onSecondButtonClicked: () {
+                          Navigator.popUntil(
+                            context,
+                            ModalRoute.withName(DashboardScreen.routeName),
+                          );
+                        },
                       );
-                      // AppDialogs.displaySuccessSnackBar(
-                      //   message: 'New Task has been created!',
-                      //   context: context,
-                      // );
                     }).catchError((error) {
                       Navigator.pop(context);
-                      AppDialogs.displayErrorSnackBar(
-                        message: error.toString(),
+                      AppDialogs.showAlertDialog(
                         context: context,
+                        title: 'Error Occurred!',
+                        description: error.toString(),
+                        firstButtonName: 'Try Again',
+                        secondButtonName: 'Go To Home',
+                        onFirstButtonClicked: () {
+                          _taskTitle.clear();
+                          _taskDescription.clear();
+                          _taskDate.clear();
+                          Navigator.pop(context);
+                        },
+                        onSecondButtonClicked: () {
+                          Navigator.popUntil(
+                            context,
+                            ModalRoute.withName(DashboardScreen.routeName),
+                          );
+                        },
                       );
                     });
                   }
