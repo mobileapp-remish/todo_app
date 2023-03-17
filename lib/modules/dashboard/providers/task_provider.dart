@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:todo_app/modules/add_task/models/task_model.dart';
+import 'package:todo_app/utils/helpers/custom_exception.dart';
 import 'package:todo_app/utils/helpers/preference_obj.dart';
 import 'package:uuid/uuid.dart';
 
@@ -36,10 +38,18 @@ class TaskProvider extends ChangeNotifier {
       hasError = false;
       errorString = '';
       notifyListeners();
-    } catch (error) {
+    }  on PlatformException catch (e) {
+      errorString = e.code;
+      if (e.code == 'network_error') {
+        errorString = 'Please check your internet connection!';
+      }
       isLoading = false;
       hasError = true;
+      notifyListeners();
+    } catch (error) {
       errorString = error.toString();
+      isLoading = false;
+      hasError = true;
       notifyListeners();
     }
   }

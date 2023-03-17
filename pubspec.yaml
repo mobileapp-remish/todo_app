@@ -36,6 +36,7 @@ flutter:
     - assets/images/google.svg
     - assets/images/login_back.png
     - assets/images/drawer_header_bg.png
+    - assets/images/no_data_found.svg
 
   fonts:
     - family: proxima_nova_regular

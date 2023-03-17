@@ -21,7 +21,6 @@ class AppDialogs {
         },
       ),
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
-      backgroundColor: Colors.red,
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }

@@ -12,6 +12,7 @@ class TaskListItemWidget extends StatelessWidget {
     return ListTile(
       title: Text(taskModel.name),
       subtitle: Text(taskModel.description),
+      trailing: Text(taskModel.date),
     );
   }
 }

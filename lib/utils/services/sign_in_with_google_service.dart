@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo_app/utils/helpers/custom_exception.dart';
 
@@ -25,6 +26,11 @@ class SignInWithGoogleService {
       await FirebaseAuth.instance.signInWithCredential(credentials);
 
       return googleSignInAccount;
+    }  on PlatformException catch (e) {
+      if (e.code == 'network_error') {
+        throw CustomException(errMessage: 'Please check your internet connection!');
+      }
+      throw CustomException(errMessage: e.code);
     } catch (error) {
       throw CustomException(errMessage: error.toString());
     }
