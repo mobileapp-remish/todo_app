@@ -8,7 +8,8 @@ import 'package:todo_app/utils/helpers/preference_obj.dart';
 import 'package:uuid/uuid.dart';
 
 class TaskProvider extends ChangeNotifier {
-  late DatabaseReference? _databaseReference = FirebaseDatabase.instance.ref(PreferenceObj.getUserId);
+  late DatabaseReference? _databaseReference =
+      FirebaseDatabase.instance.ref(PreferenceObj.getUserId);
   final List<TaskModel> taskList = [];
   late List<TaskModel> tempTaskList = [];
   late String searchString = "";
@@ -112,9 +113,10 @@ class TaskProvider extends ChangeNotifier {
       if (searchString.isNotEmpty) {
         tempTaskList = taskList.reversed
             .toList()
-            .where((element) =>
-                (element.name + element.date).toLowerCase() ==
-                searchString.toLowerCase())
+            .where((element) => (element.name + element.date)
+                .trim()
+                .toLowerCase()
+                .contains(searchString.trim().toLowerCase()))
             .toList();
       }
       notifyListeners();
