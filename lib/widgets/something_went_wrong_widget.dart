@@ -21,7 +21,7 @@ class SomethingWentWrong extends StatelessWidget {
             height: 16,
           ),
           ElevatedButton.icon(
-            onPressed: () => onTryAgainClick,
+            onPressed: () => onTryAgainClick(),
             icon: const Icon(
               Icons.refresh,
               color: Colors.white,

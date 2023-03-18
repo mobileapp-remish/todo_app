@@ -25,4 +25,14 @@ class Helper {
     final suffix = Helper.getDaySuffix(day: day);
     return '$day$suffix $month $year';
   }
+
+  static String getShortMonthName({required String fullMonthName}) {
+    DateFormat fullMonthFormat = DateFormat('MMMM');
+    DateFormat shortMonthFormat = DateFormat('MMM');
+
+    DateTime dateTime = fullMonthFormat.parse(fullMonthName);
+    String shortMonthName = shortMonthFormat.format(dateTime);
+
+    return shortMonthName;
+  }
 }

@@ -14,11 +14,11 @@ class NoDataFoundWidget extends StatelessWidget {
         children: [
           SvgPicture.asset(
             ImagesPath.noDataFound,
-            height: 150.0,
-            width: 150.0,
+            height: 140.0,
+            width: 140.0,
           ),
           const SizedBox(
-            height: 30,
+            height: 24,
           ),
           const Text(
             'No Task Added Yet!',

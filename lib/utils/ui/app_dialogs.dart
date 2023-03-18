@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/widgets/alert_dialog_widget.dart';
+import 'package:todo_app/widgets/information_dialog_widget.dart';
 import 'package:todo_app/widgets/log_out_dialog.dart';
 import 'package:todo_app/widgets/progress_dialog_widget.dart';
 
@@ -76,6 +77,29 @@ class AppDialogs {
           onSecondButtonClicked: onSecondButtonClicked,
           secondButtonName: secondButtonName,
           firstButtonName: firstButtonName,
+        );
+      },
+      barrierDismissible: isDismissible,
+    );
+  }
+
+  //TODO Title,Subtitle Dialog
+  static void showInformationDialog({
+    required BuildContext context,
+    required String title,
+    required String description,
+    required String actionName,
+    required VoidCallback onActionClick,
+    bool isDismissible = false,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return informationWidget(
+          title: title,
+          description: description,
+          actionName: actionName,
+          onClickAction: onActionClick,
         );
       },
       barrierDismissible: isDismissible,

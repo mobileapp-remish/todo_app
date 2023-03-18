@@ -1,31 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/modules/add_task/models/task_model.dart';
 import 'package:todo_app/modules/dashboard/providers/task_provider.dart';
 import 'package:todo_app/modules/dashboard/screens/dashboard_screen.dart';
 import 'package:todo_app/utils/helpers/helper.dart';
 import 'package:todo_app/utils/ui/app_dialogs.dart';
 import 'package:todo_app/utils/ui/common_style.dart';
 
-class AddTaskScreen extends StatelessWidget {
-  static const String routeName = '/Add-Task-Screen';
+class EditTaskScreen extends StatelessWidget {
+  static const String routeName = '/Edit-Task-Screen';
 
-  AddTaskScreen({Key? key}) : super(key: key);
+  EditTaskScreen({Key? key}) : super(key: key);
 
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   final TextEditingController _taskTitle = TextEditingController();
   final TextEditingController _taskDescription = TextEditingController();
   final TextEditingController _taskDate = TextEditingController();
+  late TaskModel _taskModel;
+
+  void _initData({required BuildContext context}) {
+    _taskModel = ModalRoute.of(context)!.settings.arguments as TaskModel;
+    _taskTitle.text = _taskModel.name;
+    _taskDescription.text = _taskModel.description;
+    _taskDate.text = _taskModel.date;
+  }
 
   @override
   Widget build(BuildContext context) {
-    _taskDate.text = Helper.formatDate(date: DateTime.now());
+    _initData(context: context);
     final TaskProvider taskProvider =
         Provider.of<TaskProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Create New Task'),
+        title: const Text('Update Task'),
       ),
       body: Container(
         padding: const EdgeInsets.all(16.0),
@@ -119,27 +127,17 @@ class AddTaskScreen extends StatelessWidget {
                   if (_globalKey.currentState!.validate()) {
                     _globalKey.currentState!.save();
                     AppDialogs.showProgressDialog(context: context);
-                    taskProvider
-                        .createNewTask(
-                      name: _taskTitle.text.trim(),
-                      description: _taskDescription.text.trim(),
-                      date: _taskDate.text.trim(),
-                    )
-                        .then((value) {
+                    _taskModel.setName = _taskTitle.text.trim();
+                    _taskModel.setDescription = _taskDescription.text.trim();
+                    _taskModel.setDate = _taskDate.text.trim();
+                    taskProvider.editTask(taskModel: _taskModel).then((value) {
                       Navigator.pop(context);
-                      AppDialogs.showAlertDialog(
+                      AppDialogs.showInformationDialog(
                         context: context,
-                        title: 'Task Created!',
-                        description: 'New Task has been created!',
-                        firstButtonName: 'Add More',
-                        secondButtonName: 'Go To Home',
-                        onFirstButtonClicked: () {
-                          _taskTitle.clear();
-                          _taskDescription.clear();
-                          _taskDate.clear();
-                          Navigator.pop(context);
-                        },
-                        onSecondButtonClicked: () {
+                        title: 'Task Updated!',
+                        description: 'Task Details has been updated!',
+                        actionName: 'Ok',
+                        onActionClick: () {
                           Navigator.popUntil(
                             context,
                             ModalRoute.withName(DashboardScreen.routeName),
@@ -155,9 +153,6 @@ class AddTaskScreen extends StatelessWidget {
                         firstButtonName: 'Try Again',
                         secondButtonName: 'Go To Home',
                         onFirstButtonClicked: () {
-                          _taskTitle.clear();
-                          _taskDescription.clear();
-                          _taskDate.clear();
                           Navigator.pop(context);
                         },
                         onSecondButtonClicked: () {
@@ -179,7 +174,7 @@ class AddTaskScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-                child: const Text('CREATE TASK'),
+                child: const Text('Update TASK'),
               )
             ],
           ),

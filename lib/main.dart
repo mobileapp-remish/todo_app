@@ -7,6 +7,7 @@ import 'package:todo_app/firebase_options.dart';
 import 'package:todo_app/modules/add_task/screens/add_task_screen.dart';
 import 'package:todo_app/modules/dashboard/providers/task_provider.dart';
 import 'package:todo_app/modules/dashboard/screens/dashboard_screen.dart';
+import 'package:todo_app/modules/edit_task/edit_task_screen.dart';
 import 'package:todo_app/modules/login/login_screen.dart';
 import 'package:todo_app/utils/helpers/preference_obj.dart';
 
@@ -48,8 +49,9 @@ class MyApp extends StatelessWidget {
             : LoginScreen.routeName,
         routes: {
           LoginScreen.routeName: (ctx) => const LoginScreen(),
-          DashboardScreen.routeName: (ctx) => const DashboardScreen(),
+          DashboardScreen.routeName: (ctx) => DashboardScreen(),
           AddTaskScreen.routeName: (ctx) => AddTaskScreen(),
+          EditTaskScreen.routeName: (ctx) => EditTaskScreen(),
         },
       ),
     );
