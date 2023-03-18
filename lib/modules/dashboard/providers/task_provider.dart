@@ -17,6 +17,16 @@ class TaskProvider extends ChangeNotifier {
   late bool hasError = false;
   late String errorString = '';
 
+  void clearData() {
+    taskList.clear();
+    tempTaskList.clear();
+    searchString = '';
+    isLoading = true;
+    hasError = false;
+    errorString = '';
+    notifyListeners();
+  }
+
   void onClear() {
     tempTaskList = taskList;
     notifyListeners();
@@ -43,6 +53,7 @@ class TaskProvider extends ChangeNotifier {
       hasError = false;
       errorString = '';
       taskList.clear();
+      tempTaskList.clear();
       DataSnapshot dataSnapshot = await _databaseReference.get();
       for (var element in dataSnapshot.children) {
         taskList.insert(

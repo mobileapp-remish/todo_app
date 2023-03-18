@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/constants/images_path.dart';
 import 'package:todo_app/modules/add_task/screens/add_task_screen.dart';
+import 'package:todo_app/modules/dashboard/providers/task_provider.dart';
 import 'package:todo_app/modules/login/login_screen.dart';
 import 'package:todo_app/utils/helpers/preference_obj.dart';
 import 'package:todo_app/utils/services/sign_in_with_google_service.dart';
@@ -11,6 +13,8 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TaskProvider taskProvider =
+        Provider.of<TaskProvider>(context, listen: false);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -51,6 +55,7 @@ class AppDrawer extends StatelessWidget {
                   Navigator.of(context).pop();
                   await SignInWithGoogleService.logoutWithGoogle();
                   await PreferenceObj.clearPreferenceDataAndLogout();
+                  taskProvider.clearData();
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     LoginScreen.routeName,
                     (Route route) => false,
