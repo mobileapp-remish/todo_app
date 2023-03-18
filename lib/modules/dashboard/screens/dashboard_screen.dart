@@ -14,7 +14,6 @@ class DashboardScreen extends StatelessWidget {
 
   DashboardScreen({Key? key}) : super(key: key);
 
-  late DateTime? lastPressed;
   late TaskProvider _taskProvider;
 
   @override
@@ -22,40 +21,6 @@ class DashboardScreen extends StatelessWidget {
     _taskProvider = Provider.of<TaskProvider>(context, listen: false)
       ..getAllTask();
     return SafeArea(
-      child: WillPopScope(
-        onWillPop: () async {
-          final now = DateTime.now();
-          const maxDuration = Duration(seconds: 2);
-          final isWarning =
-              lastPressed == null || now.difference(lastPressed!) > maxDuration;
-          if (isWarning) {
-            lastPressed = DateTime.now();
-
-            final snackBar = SnackBar(
-              content: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(
-                    Icons.touch_app,
-                    color: Colors.white,
-                  ),
-                  SizedBox(
-                    width: 16.0,
-                  ),
-                  Text('Press back again to exit!'),
-                ],
-              ),
-              duration: maxDuration,
-            );
-
-            ScaffoldMessenger.of(context)
-              ..removeCurrentSnackBar()
-              ..showSnackBar(snackBar);
-            return false;
-          } else {
-            return true;
-          }
-        },
         child: Scaffold(
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(56.0),
@@ -99,7 +64,6 @@ class DashboardScreen extends StatelessWidget {
           ),
           drawer: const AppDrawer(),
         ),
-      ),
     );
   }
 }
