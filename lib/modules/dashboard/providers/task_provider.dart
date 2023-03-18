@@ -8,8 +8,7 @@ import 'package:todo_app/utils/helpers/preference_obj.dart';
 import 'package:uuid/uuid.dart';
 
 class TaskProvider extends ChangeNotifier {
-  final DatabaseReference _databaseReference =
-      FirebaseDatabase.instance.ref(PreferenceObj.getUserId);
+  late DatabaseReference? _databaseReference;
   final List<TaskModel> taskList = [];
   late List<TaskModel> tempTaskList = [];
   late String searchString = "";
@@ -17,7 +16,12 @@ class TaskProvider extends ChangeNotifier {
   late bool hasError = false;
   late String errorString = '';
 
+  void initData() {
+    _databaseReference = FirebaseDatabase.instance.ref(PreferenceObj.getUserId);
+  }
+
   void clearData() {
+    _databaseReference = null;
     taskList.clear();
     tempTaskList.clear();
     searchString = '';
@@ -54,7 +58,7 @@ class TaskProvider extends ChangeNotifier {
       errorString = '';
       taskList.clear();
       tempTaskList.clear();
-      DataSnapshot dataSnapshot = await _databaseReference.get();
+      DataSnapshot dataSnapshot = await _databaseReference!.get();
       for (var element in dataSnapshot.children) {
         taskList.insert(
           0,
@@ -90,7 +94,7 @@ class TaskProvider extends ChangeNotifier {
 
   Future<void> refreshTask() async {
     try {
-      DataSnapshot dataSnapshot = await _databaseReference.get();
+      DataSnapshot dataSnapshot = await _databaseReference!.get();
       taskList.clear();
       for (var element in dataSnapshot.children) {
         taskList.insert(
@@ -131,7 +135,7 @@ class TaskProvider extends ChangeNotifier {
         'description': description,
         'date': date,
       });
-      await _databaseReference.child(taskModel.id).set(taskModel.toJson());
+      await _databaseReference!.child(taskModel.id).set(taskModel.toJson());
       taskList.insert(0, taskModel);
       tempTaskList = taskList;
       notifyListeners();
@@ -143,7 +147,7 @@ class TaskProvider extends ChangeNotifier {
 
   Future<void> editTask({required TaskModel taskModel}) async {
     try {
-      await _databaseReference.child(taskModel.id).set(taskModel.toJson());
+      await _databaseReference!.child(taskModel.id).set(taskModel.toJson());
       final int taskIndex = taskList.indexWhere((element) =>
           element.id.toLowerCase().trim() == taskModel.id.toLowerCase().trim());
       taskList[taskIndex] = taskModel;
@@ -157,7 +161,7 @@ class TaskProvider extends ChangeNotifier {
 
   Future<void> deleteTask({required TaskModel taskModel}) async {
     try {
-      await _databaseReference.child(taskModel.id).remove();
+      await _databaseReference!.child(taskModel.id).remove();
       taskList.removeWhere((element) =>
           element.id.toLowerCase().trim() == taskModel.id.toLowerCase().trim());
       tempTaskList = taskList;

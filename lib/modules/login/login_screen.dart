@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/constants/images_path.dart';
+import 'package:todo_app/modules/dashboard/providers/task_provider.dart';
 import 'package:todo_app/modules/dashboard/screens/dashboard_screen.dart';
 import 'package:todo_app/utils/helpers/custom_exception.dart';
 import 'package:todo_app/utils/helpers/preference_obj.dart';
@@ -140,6 +142,7 @@ class LoginScreen extends StatelessWidget {
       await PreferenceObj.setProfileUrl(
           profileUrl: googleSignInAccount.photoUrl ?? '');
       await PreferenceObj.setIsLogin(isLoggedIn: true);
+      Provider.of<TaskProvider>(context, listen: false).initData();
       Navigator.pushReplacementNamed(context, DashboardScreen.routeName);
       return;
     } on CustomException catch (errMsg) {
