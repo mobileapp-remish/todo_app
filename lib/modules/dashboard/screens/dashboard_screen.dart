@@ -52,7 +52,7 @@ class DashboardScreen extends StatelessWidget {
                               padding: EdgeInsets.zero,
                               itemCount: _taskProvider.tempTaskList.length,
                               itemBuilder: (ctx, index) => TaskListItemWidget(
-                                taskModel: _taskProvider.taskList[index],
+                                taskModel: _taskProvider.tempTaskList[index],
                               ),
                             ),
                           ),

@@ -8,7 +8,7 @@ import 'package:todo_app/utils/helpers/preference_obj.dart';
 import 'package:uuid/uuid.dart';
 
 class TaskProvider extends ChangeNotifier {
-  late DatabaseReference? _databaseReference = FirebaseDatabase.instance.ref(PreferenceObj.getUserId);;
+  late DatabaseReference? _databaseReference = FirebaseDatabase.instance.ref(PreferenceObj.getUserId);
   final List<TaskModel> taskList = [];
   late List<TaskModel> tempTaskList = [];
   late String searchString = "";
